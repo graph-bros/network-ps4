@@ -3,7 +3,7 @@ from numpy import *
 from scipy.misc import comb
 
 
-def sbm_likelihood(A, z, log_scale=False):
+def likelihood(A, z, log_scale=False):
     """
     calculate SBM likelihood
 

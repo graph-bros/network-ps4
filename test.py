@@ -1,7 +1,7 @@
 import unittest
 
 from numpy import *
-from sbmutil import sbm_likelihood
+import sbm
 
 
 class TestSequenceFunctions(unittest.TestCase):
@@ -29,8 +29,8 @@ class TestSequenceFunctions(unittest.TestCase):
         lnlgood = -3.1395
 
         A = matrix(p10_example)
-        lresult = sbm_likelihood(A, z, log_scale=False)
-        lnlresult = sbm_likelihood(A, z, log_scale=True)
+        lresult = sbm.likelihood(A, z, log_scale=False)
+        lnlresult = sbm.likelihood(A, z, log_scale=True)
 
         self.assertAlmostEqual(lgood, lresult, 4)
         self.assertAlmostEqual(lnlgood, lnlresult, 4)
