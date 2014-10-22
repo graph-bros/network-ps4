@@ -3,6 +3,7 @@ import unittest
 from numpy import *
 from sbmutil import sbm_likelihood
 
+
 class TestSequenceFunctions(unittest.TestCase):
 
     def setUp(self):
