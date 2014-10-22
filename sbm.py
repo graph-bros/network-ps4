@@ -43,3 +43,36 @@ def likelihood(A, z, log_scale=False):
         return log(L)
     else:
         return L
+
+
+def generate(M, z):
+    """
+    generate a simple SBM with undirected, unweighted,
+    no multi or selp-loop
+
+    M: k X k SBM
+    z: n X 1 vector where z(i) gives the group index of vertex i
+       for example, z(i) can have {1,2,3...,k} values.
+
+    return A: adjacency matrix
+    """
+    k = unique(z)
+    n = len(z)
+    A = zeros((n,n))
+
+    # SBM based on k
+    for u in range(len(k)):
+        for v in range(len(k)):
+            temp_A = random.random((sum(z==k[u]), sum(z==k[v])))
+            temp_A[temp_A < M[u, v]] = 1
+            temp_A[temp_A != 1] = 0
+            if u == v:
+                # upper triange only without diagonal
+                temp_A = triu(temp_A, 1)
+            # FIXME: This is just work around
+            # Need to verify this
+            ku_range = where(z==k[u])[0]
+            kv_range = where(z==k[v])[0]
+            A[ku_range[0]:ku_range[-1]+1, \
+              kv_range[0]:kv_range[-1]+1] = temp_A
+    return A

@@ -35,6 +35,11 @@ class TestSequenceFunctions(unittest.TestCase):
         self.assertAlmostEqual(lgood, lresult, 4)
         self.assertAlmostEqual(lnlgood, lnlresult, 4)
 
+    def test_generate_sbm(self):
+        M = matrix("0.5 0.03; 0.03 0.5")
+        z = append(repeat(1,5), repeat(2,5))
+        print sbm.generate(M, z)
+
 
 if __name__ == '__main__':
     unittest.main()
