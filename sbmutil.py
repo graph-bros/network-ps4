@@ -43,33 +43,3 @@ def sbm_likelihood(A, z, log_scale=False):
         return log(L)
     else:
         return L
-
-
-if __name__ == "__main__":
-    """
-    For testing purpose only:
-
-    Example 2.4 in Lecture 6.
-    Lgood = 0.0433
-    lnLgood = -3.1395
-    """
-
-    p10_example = """0 1 1 0 0 0;
-    1 0 1 0 0 0;
-    1 1 0 1 0 0;
-    0 0 1 0 1 1;
-    0 0 0 1 0 1;
-    0 0 0 1 1 0"""
-    z = array([1, 1, 1, 2, 2, 2])
-    lgood = 0.0433
-    lnlgood = -3.1395
-
-    A = matrix(p10_example)
-    lresult = sbm_likelihood(A, z, log_scale=False)
-    lnlresult = sbm_likelihood(A, z, log_scale=True)
-
-    print "Lgood:", lresult
-    print "lnLgood:", lnlresult
-
-    np.testing.assert_almost_equal(lgood, lresult, 4)
-    np.testing.assert_almost_equal(lnlgood, lnlresult, 4)
