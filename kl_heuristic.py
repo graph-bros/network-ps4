@@ -46,7 +46,7 @@ def kl_heuristic(A, z):
     the Kernigan-Lin(KL) heuristic
 
     A: adjacency matrix
-    z: 
+    z: membership
 
     return
     bestL: maximum likelihood over all j, n-j partitioning
@@ -56,14 +56,13 @@ def kl_heuristic(A, z):
     n_round = 10
     P = defaultdict(list)
     L = defaultdict(list)
+    bestL = 0
+    bestP = None
     for j in range(1, (n+1)/2):
-        print ">>> j:", j
         z_init = rand_partition(n, j)
         l_init = sbm.likelihood(A, z_init, log_scale=True)
-        print "l init:", l_init
         z_round = z_init
         for _round in range(n_round):
-            print ">> round:", _round
             z_values = []
             l_values = []
             for index, pair in enumerate(swap_pairs(z_round)):
@@ -75,8 +74,9 @@ def kl_heuristic(A, z):
             z_max_round = z_values[l_max_index]
             z_round = z_max_round
             L[j].append(l_values)
-            print "max:", max(l_values)
-            print "z:", z_round
+            bestL = max(l_values)
+            bestP = z_max_round
+    return bestL, bestP, L, P
 
 
 def read_size(filename):
@@ -101,6 +101,10 @@ def pair_generator(f):
 
 
 if __name__ == "__main__":
+    """
+    Testing with Karate Club Data
+
+    """
     karate_club_edge_path = "karate_club_edges.txt"
     karate_club_labels_path = "karate_labels.txt"
     n = read_size(karate_club_labels_path)
@@ -110,4 +114,4 @@ if __name__ == "__main__":
         A[edge[0]-1, edge[1]-1] = 1
 
     z = read_labels(karate_club_labels_path)
-    kl_heuristic(A, z)
+    bestL, bestP, L, P = kl_heuristic(A, z)
